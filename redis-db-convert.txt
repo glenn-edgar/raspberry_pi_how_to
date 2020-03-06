@@ -1,0 +1,20 @@
+For databases where the appendonly flag is set to no, you can do the following:
+
+Stop redis (because redis overwrites the current rdb file when it exits).
+Copy you backup rdb file to the redis working directory (this is the dir option in your redis config). Also make sure your backup filename matches the dbfilename config option.
+Start redis.
+If, on the other hand, you need to restore a rdb file to an append only database, you should do something along the lines of:
+
+Stop redis (because redis overwrites the current rdb file when it exits).
+Copy your backup rdb file to the redis working directory (this is the dir option in your redis config). Also make sure your backup filename matches the dbfilename config option.
+Change the redis config appendonly flag to no (otherwise redis will ignore your rdb file when it starts).
+Start redis.
+Run redis-cli BGREWRITEAOF to create a new appendonly file.
+Restore redis config appendonly flag to yes.
+Specifically, this is the relevant bit of documentation from the redis config file comments:
+
+# Note that you can have both the async dumps and the append only file if you                                                     
+# like (you have to comment the "save" statements above to disable the dumps).                                                    
+# >> Still if append only mode is enabled Redis will load the data from the                                                          
+# >> log file at startup ignoring the dump.rdb file. 
+

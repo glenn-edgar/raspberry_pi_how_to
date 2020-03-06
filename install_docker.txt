@@ -1,0 +1,186 @@
+How to Install Docker on Raspberry Pi
+To install Docker on your Raspberry Pi, you need to go through the following steps:
+
+Update and upgrade your system.
+Download the installation script and install the package.
+Allow a non-root user to execute Docker commands.
+Verify installation by checking the Docker version.
+Test the set up by running a hello-world container.
+Step 1: Update and Upgrade
+Start by updating and upgrading the system. This ensures you install the latest version of the software.
+Open a terminal window and run the command:
+
+sudo apt-get update && sudo apt-get upgrade
+
+curl -fsSL https://get.docker.com -o get-docker.sh
+Execute the script using the command:
+
+sudo sh get-docker.sh
+This installs the required packages for your Raspbian Linux distribution.
+Step 3: Add a Non-Root User to the Docker Group
+By default, only users who have administrative privileges (root users) can run containers. If you are not logged in as the root, one option is to use the sudo prefix.
+
+However, you could also add your non-root user to the Docker group which will allow it to execute docker commands.
+
+The syntax for adding users to the Docker group is:
+
+sudo usermod -aG docker [user_name]
+To add the Pi user (the default user in Raspbian), use the command:
+
+
+sudo usermod -aG docker Pi
+There is no specific output if the process is successful. For the changes to take place, you need to log out and then back in.
+
+Step 4: Check Docker Version and Info
+Check the version of Docker on your Raspberry Pi by typing:
+
+
+
+
+
+
+
+There are 3 steps:
+Add the Docker group if it doesnt already exist:
+sudo groupadd docker
+2. Add the connected user $USER to the docker group. Change the user name to match your preferred user if you do not want to use your current user:
+
+sudo gpasswd -a $USER docker
+3. From here you have two options: either logout and then log back in, or 
+
+run newgrp docker 
+
+for the changes to take effect.
+
+You should now be able to run Docker without sudo. To test, try this:
+
+docker run hello-world
+
+
+
+docker version
+The output will display the Docker version along with some additional information.
+For system-wide information (including the kernel version, number of containers and images, and more extended description) run:
+
+docker info
+Step 5: Run Hello World Container
+The best way to test whether Docker has been set up correctly is to run the Hello World container.
+To do so, type in the following command:
+
+docker run hello-world
+Raspberry Pi Docker Images
+Opposed to most other Linux distributions, Raspberry Pi is based on ARM architecture. Hence, not all Docker images will work on your Raspberry Pi.
+
+In fact, all Docker images that are not specifically designed for ARM devices will not work. Running docker-apps designed for x86/x64 and i386 architecture on your Raspberry Pi will return an error.
+
+Remember that when searching for images to pull from Docker Hub. Apply the Architectures filter to search for supported apps.
+
+For custom solutions, the best thing to do would be to run a container based on an official image and then modify it and commit the changes to a new image.
+
+How to Upgrade Docker on Raspberry Pi?
+There is no need to re-run the convenience script to upgrade Docker. Furthermore, running the convenience script again might cause issues if it attempts to repositories that have been added already.
+
+Upgrade Docker using the package manager with the command:
+
+sudo apt-get upgrade
+How to Uninstall Docker on Your Raspberry Pi?
+Although you used a convenience script for installation, you can simply remove docker using the package manager:
+
+sudo apt-get purge docker-ce
+
+Introduction
+Docker is a tool for creating, deploying, and running applications in containers. The software is popular among developers as it speeds up the development process and does not use a lot of resources.
+
+Docker containers are lightweight, especially compared to virtual machines. This feature is especially valuable if you are a Raspberry Pi user.
+
+If you need help installing Docker on your Raspberry Pi, read our step-by-step guide on how to install Docker on Raspberry Pi.
+
+Tutorial on how to install Docker on Raspebby Pi.
+Prerequisites
+Raspberry Pi with a running Raspbian OS
+Raspbian Stretch (Lite)
+SSH connection enabled
+How to Install Docker on Raspberry Pi
+To install Docker on your Raspberry Pi, you need to go through the following steps:
+
+Update and upgrade your system.
+Download the installation script and install the package.
+Allow a non-root user to execute Docker commands.
+Verify installation by checking the Docker version.
+Test the set up by running a hello-world container.
+Step 1: Update and Upgrade
+Start by updating and upgrading the system. This ensures you install the latest version of the software.
+Open a terminal window and run the command:
+
+sudo apt-get update && sudo apt-get upgrade
+Updating and upgrading Raspbian repositories before installation of Docker on Raspberry Pi.
+Step 2: Download the Convenience Script and Install Docker on Raspberry Pi
+Move on to downloading the installation script with:
+
+curl -fsSL https://get.docker.com -o get-docker.sh
+Execute the script using the command:
+
+sudo sh get-docker.sh
+This installs the required packages for your Raspbian Linux distribution.
+
+How to download convenience script to install Docker on Raspberry Pi.
+The output will tell you which version of Docker is now running on your system.
+
+Information on Docker version running on your Raspberry Pi.
+Step 3: Add a Non-Root User to the Docker Group
+By default, only users who have administrative privileges (root users) can run containers. If you are not logged in as the root, one option is to use the sudo prefix.
+
+However, you could also add your non-root user to the Docker group which will allow it to execute docker commands.
+
+The syntax for adding users to the Docker group is:
+
+sudo usermod -aG docker [user_name]
+To add the Pi user (the default user in Raspbian), use the command:
+
+sudo usermod -aG docker Pi
+There is no specific output if the process is successful. For the changes to take place, you need to log out and then back in.
+
+Step 4: Check Docker Version and Info
+Check the version of Docker on your Raspberry Pi by typing:
+
+docker version
+The output will display the Docker version along with some additional information.
+For system-wide information (including the kernel version, number of containers and images, and more extended description) run:
+
+docker info
+
+
+Step 5: Run Hello World Container
+The best way to test whether Docker has been set up correctly is to run the Hello World container.
+To do so, type in the following command:
+
+docker run hello-world
+The software will contact the Docker daemon, pull the hello-world image, and create a new container based on that image.
+Once it goes through all the steps, the output should inform you that your installation appears to be working correctly.
+
+Verifying if Docker installation is running correctly on your Raspberry Pi.
+Try out creating containers on your own and get acquainted with some of the best practices for managing Docker containers.
+
+Raspberry Pi Docker Images
+Opposed to most other Linux distributions, Raspberry Pi is based on ARM architecture. Hence, not all Docker images will work on your Raspberry Pi.
+
+In fact, all Docker images that are not specifically designed for ARM devices will not work. Running docker-apps designed for x86/x64 and i386 architecture on your Raspberry Pi will return an error.
+
+Remember that when searching for images to pull from Docker Hub. Apply the Architectures filter to search for supported apps.
+
+For custom solutions, the best thing to do would be to run a container based on an official image and then modify it and commit the changes to a new image.
+
+How to Upgrade Docker on Raspberry Pi?
+There is no need to re-run the convenience script to upgrade Docker. Furthermore, running the convenience script again might cause issues if it attempts to repositories that have been added already.
+
+Upgrade Docker using the package manager with the command:
+
+sudo apt-get upgrade
+How to Uninstall Docker on Your Raspberry Pi?
+Although you used a convenience script for installation, you can simply remove docker using the package manager:
+
+sudo apt-get purge docker-ce
+Uninstall docker on raspberry pi using the purge command.
+To delete leftover images, containers, volumes and other related data, run the following command:
+
+sudo rm -rf /var/lib/docker

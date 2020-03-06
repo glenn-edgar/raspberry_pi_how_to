@@ -1,0 +1,95 @@
+The following is a cheat sheet of some of the more common commands for using a USB drive with a Pi. I've written an extensive tutorial on using USB drives on a Pi shell at http://ipggi.wordpress.com/2013/03/21/u ... pberry-pi/. It covers power supply issues, mounts, performance, disk file formats, compatibility and formating.
+
+To mount a USB drive:
+Code: Select all
+
+sudo mkdir /mnt/usbdrive
+sudo mount /dev/sda1 /mnt/usbdrive
+ls /mnt/usbdrive
+To list your file systems:
+Code: Select all
+
+sudo fdisk -l
+sudo mount -l
+df -h
+Before disconnecting a USB drive:
+Code: Select all
+
+sudo umount /dev/sda1
+Format a drive to Linux EXT4
+Code: Select all
+
+sudo mkfs.ext4 /dev/sda1 -L untitled
+Add Apple OS X HFS+ read/write support
+Code: Select all
+
+sudo apt-get install hfsutils hfsprogs hfsutils
+Format a drive to HFS+
+Code: Select all
+
+sudo mkfs.hfsplus /dev/sda1 -v untitled
+Add Windows NTFS read/write support
+Code: Select all
+
+sudo apt-get install ntfs-3g
+Format a drive to NTFS
+Code: Select all
+
+sudo mkfs.ntfs /dev/sda1 -f -v -I -L untitled
+Add Windows/DOS FAT32 read/write support
+Code: Select all
+
+sudo apt-get install dosfstools
+Format a drive to FAT32
+Code: Select all
+
+sudo mkfs.vfat /dev/sda1 -n untitled
+
+
+Format a ssd drive to ext4
+
+
+
+Step 1. Log on pi using ssh terminal and execute:
+
+sudo blkid
+
+You will see something like the following:
+
+lrwxrwxrwx 1 root root 10 Jan 1 1970 0AC4D607C4D5F543 -> ../../sda1 Note down the value of the UUID --> 0AC4D607C4D5F543
+
+Step 2. Create a location for mount point:
+
+sudo mkdir /mnt/volume
+
+Give proper permission:
+
+sudo chmod 770 /mnt/volume
+
+Step 3. Get the uid, gid for pi user and group with id command (usually 1000)
+
+Step 4. Mount the USB Drive and then check if it is accessible at /mnt/volume
+
+sudo mount -t ntfs-3g -o nofail,uid=1000,gid=1000,umask=007 /dev/sda1 /mnt/volume
+
+Or:
+
+sudo mount /dev/sda1 /mnt/volume
+
+Note: ntfs-3g for NTFS Drives vfat for FAT32 Drives ext4 for ext4 Drives
+
+Step 5. Now, we will configure RasPi to do this after every reboot: Take a backup of current fstab and then edit
+
+sudo cp /etc/fstab /etc/fstab.backup
+sudo nano /etc/fstab
+Add the mount information in the fstab file (replace UUID with your own):
+
+UUID=0AC4D607C4D5F543 /mnt/volume ntfs-3g async,big_writes,noatime,nodiratime,nofail,uid=1000,gid=1000,umask=007 0 0
+
+Or:
+
+/dev/sda1 /mnt/volume ntfs defaults 0 0
+
+Step 6. Reboot
+
+sudo reboot

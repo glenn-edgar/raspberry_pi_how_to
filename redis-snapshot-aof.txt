@@ -1,0 +1,8 @@
+from redis-cli execute the following command
+
+config set appendonly yes
+
+either use redis-cli to name shot the config file or change the
+appendonly yes 
+in redis-config and reboot
+
